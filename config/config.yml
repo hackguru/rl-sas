@@ -1,0 +1,150 @@
+#paths:
+repo_path: RL_SAS/
+#data
+data_file_path: data/rocket_data.csv #most of the data
+result_path: results/
+#both of the below are in the results folder
+pickle_path: pickles/
+data_result_path: data/figures/
+labels_path: video_labels/
+ray_results_path: ray_results/RL-SAS/
+
+#model
+#both of the below are in the results folder
+pickle_path: pickles/
+model_result_path: model/figures/
+
+#Model variables
+
+# Regression variables: 
+reg_model: ridge #either linreg or ridge for L2 regularization
+alpha: 0.5 #alpha for Ridge
+norm_mode: max #either full or max: full is 0-1, max scales to the max
+
+
+# Min and max degree of polynomials features to consider
+degree_min: 4
+degree_max: 4
+# Test/train split
+test_set_fraction: .2
+
+# RL Variables:
+
+# Environment variables: 
+scale_var: 10.0 # scales all the normalized input/output values
+
+# The fraction within range of the target within which
+# we say the agent has reached the goal.
+# For each of the 3 outputs. 
+thresh1: .04 #within 4% of the target
+thresh2: .04
+thresh3: .04
+
+# Reward upon reaching the goal
+# This is multiplied by scale_var
+reward: 1000
+
+# Scaling variable for the MSE:
+MSE_scale: 10 #multiply the MSE by this to get negative reward
+
+# Action range: can go up or down this % of the range
+action_range: .5
+
+# Noise is really an add-on to the regression model: it adds some random noise to
+# the deterministic regression output to more closely mimic the simulation space
+# Noise is a fraction of the threshold for accuracy: a fraction of thresh1
+noise: .05
+
+# This removes the top & bottom fraction of the input space.
+# The range is 0-1
+minmaxbuffer: 0
+
+# Experiment variables:
+  #Stopping conditions:
+time_total_s: 600000
+timesteps_total: 100000000
+episode_reward_mean: 10000
+
+checkpoint-freq: 1
+
+num_workers: 3 # 1 fewer than available CPU!
+
+#AGENT
+agent: 'PPO'
+
+# PPO agent variables; note, these may be different if you change the agent:
+gamma: 0.995 # Discount factor of the MDP
+horizon: 1000 # Number of steps after which the rollout gets cut
+num_sgd_iter: 30 #Number of stochastic gradient descent iterations in each outer loop
+sgd_stepsize: 0.00005
+timesteps_per_batch: 4000
+min_steps_per_task: 200
+
+# Rendering settings that may need to be tweaked per model:
+buff_axis: 0.2 #buffer for top & bottom of screen 
+scalestep: 50 #number steps for step axis
+
+#plot variables:
+#video:
+
+ftype: .png
+labels:
+  - G1F
+  - G1T
+  - G2F
+  - G2T
+  - O1
+  - O2
+  - O3
+
+#3d data plot columns:
+xvar: 1
+yvar: 2
+zvar: 0
+
+
+
+fs: 14 #fontsize for x & y labels
+
+#Data variables
+
+
+#data management variables: 
+
+#variables to change the scale for:
+change_scale:
+  - I_CH4_g/s
+  - I_O2_g/s
+
+#naming
+in_var:
+  - I_CH4_g/s
+  - I_CH4_t
+  - I_O2_g/s
+  - I_O2_t
+
+out_var:
+  - O_CH4_flow_uniformity
+  - O_CH4_mol_frac
+  - O_t
+
+all_var: 
+  - I_CH4_g/s
+  - I_CH4_t
+  - I_O2_g/s
+  - I_O2_t
+  - O_CH4_flow_uniformity
+  - O_CH4_mol_frac
+  - O_t
+
+#corresponding names, for figure labeling: 
+in_var_name:
+  - CH4 flow rate, g/s
+  - CH4 temp (K)
+  - O2 flow rate, g/s
+  - O2 temp (K)'
+
+out_var_name:
+  - CH4 flow uniformity
+  - CH4 mol frac
+  - output temp (K)
